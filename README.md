@@ -1,8 +1,6 @@
 # Lightpanda Browser on Railway
 
-Deploy [Lightpanda](https://github.com/lightpanda-io/browser) headless browser on Railway with one click.
-
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/lightpanda)
+Deploy [Lightpanda](https://github.com/lightpanda-io/browser) browser on Railway with one click.
 
 ## About Lightpanda
 
