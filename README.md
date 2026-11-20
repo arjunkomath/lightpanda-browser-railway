@@ -12,7 +12,7 @@ For detailed information about features, use cases, and capabilities, visit the 
 
 ## Deployment
 
-This template deploys the latest nightly build of Lightpanda Browser with the CDP server exposed on port 9222.
+This template deploys a pinned stable release of Lightpanda Browser (currently `1.0.5`) with the CDP server exposed on port 9222. To use a different release, change `LIGHTPANDA_VERSION` in the Dockerfile (set it to `nightly` for the latest nightly build).
 
 ### Connecting to Lightpanda
 
@@ -40,7 +40,7 @@ Lightpanda rejects requests (HTTP 403) whose `Host` header isn't an IP address, 
 
 - **Base Image**: `debian:bookworm-slim`
 - **Port**: 9222 (Chrome DevTools Protocol)
-- **Binary**: Latest nightly build from [Lightpanda releases](https://github.com/lightpanda-io/browser/releases)
+- **Binary**: Stable `1.0.5` from [Lightpanda releases](https://github.com/lightpanda-io/browser/releases) (`LIGHTPANDA_VERSION` build arg)
 - **Init System**: `dumb-init` for proper signal handling
 - **User**: runs as non-root `lightpanda` (uid 1000)
 - **Variables**: `ADVERTISE_HOST` (optional, defaults to `RAILWAY_PRIVATE_DOMAIN`)

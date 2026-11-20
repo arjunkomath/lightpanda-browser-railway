@@ -12,7 +12,11 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /usr/src/app
 
-RUN curl -fL -o lightpanda https://github.com/lightpanda-io/browser/releases/download/nightly/lightpanda-x86_64-linux && \
+# Pinned stable release (https://github.com/lightpanda-io/browser/releases).
+# Override at build time with --build-arg LIGHTPANDA_VERSION=<tag>, or "nightly".
+ARG LIGHTPANDA_VERSION=1.0.5
+
+RUN curl -fL -o lightpanda "https://github.com/lightpanda-io/browser/releases/download/${LIGHTPANDA_VERSION}/lightpanda-x86_64-linux" && \
   chmod a+x ./lightpanda
 
 # The CDP endpoint has no authentication, so don't run it as root.
