@@ -16,7 +16,7 @@ This template deploys the latest stable release of Lightpanda Browser with the C
 
 ### Connecting to Lightpanda
 
-Once deployed, you can connect to your Lightpanda instance from another service in the same project over Railway's private network, using Playwright, Puppeteer, or any CDP-compatible client. The endpoint is `ws://<private-domain>:9222`, e.g. set `LIGHTPANDA_URL=ws://${{lightpanda.RAILWAY_PRIVATE_DOMAIN}}:9222` on your app service.
+Once deployed, you can connect to your Lightpanda instance from another service in the same project over Railway's private network, using Playwright, Puppeteer, or any CDP-compatible client. The template exposes the endpoint as the `CDP_ENDPOINT` variable (`ws://<private-domain>:9222`), so reference it from your app service with `CDP_ENDPOINT=${{lightpanda.CDP_ENDPOINT}}`.
 
 #### Puppeteer Example
 
@@ -24,7 +24,7 @@ Once deployed, you can connect to your Lightpanda instance from another service 
 const puppeteer = require('puppeteer-core');
 
 const browser = await puppeteer.connect({
-    browserWSEndpoint: process.env.LIGHTPANDA_URL
+    browserWSEndpoint: process.env.CDP_ENDPOINT
 });
 const page = await browser.newPage();
 await page.goto('https://example.com');
@@ -43,7 +43,10 @@ Lightpanda rejects requests (HTTP 403) whose `Host` header isn't an IP address, 
 - **Binary**: Latest stable from [Lightpanda releases](https://github.com/lightpanda-io/browser/releases) (pin with the `LIGHTPANDA_VERSION` build arg)
 - **Init System**: `dumb-init` for proper signal handling
 - **User**: runs as non-root `lightpanda` (uid 1000)
-- **Variables**: `ADVERTISE_HOST` (optional, defaults to `RAILWAY_PRIVATE_DOMAIN`)
+- **Variables**:
+  - `CDP_ENDPOINT`: connection URL for other services (`ws://${{RAILWAY_PRIVATE_DOMAIN}}:9222`)
+  - `ADVERTISE_HOST` (optional): host to accept/advertise, defaults to `RAILWAY_PRIVATE_DOMAIN`
+  - `LIGHTPANDA_VERSION` (optional): release tag to pin, or `nightly`; defaults to latest stable
 
 ## Resources
 
