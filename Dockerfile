@@ -5,19 +5,19 @@ ENV TZ="Etc/UTC"
 
 RUN apt-get update && apt-get install -y \
   ca-certificates \
-  curl \
   dumb-init \
   --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/app
 
-# Pinned stable release (https://github.com/lightpanda-io/browser/releases).
-# Override at build time with --build-arg LIGHTPANDA_VERSION=<tag>, or "nightly".
-ARG LIGHTPANDA_VERSION=1.0.5
-
-RUN curl -fL -o lightpanda "https://github.com/lightpanda-io/browser/releases/download/${LIGHTPANDA_VERSION}/lightpanda-x86_64-linux" && \
-  chmod a+x ./lightpanda
+# Latest stable release by default (https://github.com/lightpanda-io/browser/releases).
+# Set LIGHTPANDA_VERSION to a release tag (e.g. 1.0.5) to pin it, or to "nightly".
+# ADD re-checks the remote file on every build, so a new release isn't hidden by
+# the layer cache.
+ARG LIGHTPANDA_VERSION=
+ADD --chmod=755 https://github.com/lightpanda-io/browser/releases/${LIGHTPANDA_VERSION:+download/}${LIGHTPANDA_VERSION:-latest/download}/lightpanda-x86_64-linux ./lightpanda
+RUN ./lightpanda version
 
 # The CDP endpoint has no authentication, so don't run it as root.
 RUN useradd --create-home --uid 1000 lightpanda
